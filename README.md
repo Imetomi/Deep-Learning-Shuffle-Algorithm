@@ -16,4 +16,4 @@ Iris Dataset | FFW | Loaded from SciKit-Learn
 Archimedean Spirals | FFW | Custom Generator Code
 
 ## Metrics
-We measure the success rate of our custom algorithm based on how much **time** is needed for the neural network to achieve a given accuracy. When working on different computers we also check the number of **epochs** needed for a given loss.
+We measure the success rate of our custom algorithm based on how much **time** is needed for the neural network to achieve a given accuracy. When working on different computers we also check the number of **epochs** needed for a given loss. These results will be compared to random shuffling with a predefined random state. 
