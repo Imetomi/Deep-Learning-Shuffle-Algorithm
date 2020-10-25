@@ -6,13 +6,13 @@ To measure the success of our ideas we’re going to use a variety of datasets a
 These are the following:
 Dataset       | Architecture  | Source
 ------------- | ------------- | -------------
-Fahsion MNIST  | CNN | Loaded from Keras
+Fahsion MNIST  | CNN | [GitHub](https://github.com/zalandoresearch/fashion-mnist)
 MNIST  | CNN | Loaded from Keras
 Sentiment140 | LSTM | [Kaggle](https://www.kaggle.com/kazanova/sentiment140)
 Music Genre | FFW | [GitHub](https://github.com/kumargauravsingh14/music-genre-classification/blob/master/data.csv)
 Wine Dataset | FFW | Loaded from SciKit-Learn
 Boston Dataset | FFW | Loaded from SciKit-Learn
-Iris Dataset | FFW | Loaded from SciKit-Learn
+Iris Dataset | FFW | [Kaggle](https://www.kaggle.com/uciml/iris)
 Archimedean Spirals | FFW | Custom Generator Code
 
 A few of these are quite large and are not uploaded in this repository. 
