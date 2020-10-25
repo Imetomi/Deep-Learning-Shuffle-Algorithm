@@ -1,3 +1,5 @@
 twitter_sentiment.csv
 fashion-mnist_train.csv
 mnist_train.csv 
+*.npy
+*.pickle
