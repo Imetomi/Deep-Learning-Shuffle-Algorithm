@@ -14,6 +14,7 @@ Wine Dataset | FFW | Loaded from SciKit-Learn
 Boston Dataset | FFW | Loaded from SciKit-Learn
 Iris Dataset | FFW | Loaded from SciKit-Learn
 Archimedean Spirals | FFW | Custom Generator Code
+
 A few of these are quite large and are not uploaded in this repository.
 
 ## Metrics
