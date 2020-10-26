@@ -2,7 +2,7 @@
 The goal of our project is to create a batch selection algorithm that is able to make the learning process faster by carefully selecting corresponding instances in every batch. Our hope is to outperform random shuffling that is commonly used in deep learning problems.  
 
 ## Datasets
-To measure the success of our ideas we’re going to use a variety of datasets and neural network architectures in order to get relevant benchmarks. Some of these are well-known preprocessed and toy-datasets while we also create some of our own data for a more advanced comparision. The reason for using some toy-datasets as well is to have a better mathematical understanding about how our algorithm affects the learning process.  
+To measure the success of our ideas we’re going to use a variety of datasets and neural network architectures in order to get relevant benchmarks. Some of these are well-known preprocessed and toy-datasets while we also create some of our own data for a more advanced comparison. The reason for using some toy-datasets as well is to have a better mathematical understanding about how our algorithm affects the learning process.  
 These are the following:  
 Dataset       | Architecture  | Source 
 ------------- | ------------- | -------------
