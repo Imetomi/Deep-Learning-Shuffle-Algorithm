@@ -19,4 +19,4 @@ A few of these are quite large and are not uploaded in this repository.
 With the exception of the NLP problem these datasets don't need advanced preprocessing and feature engineering. We used normalization and standardization where needed and made some plots just to see what are we going to tackle.  
 
 ## Metrics
-We measure the success rate of our custom algorithm based on how much **time** is needed for the neural network to achieve a given accuracy. When working on different computers we also check the number of **epochs** needed for a given loss. These results will be compared to random shuffling with a predefined random state. 
+We measure the success rate of our custom algorithm based on how much **time** is needed for the neural network to achievCe a given accuracy. When working on different computers we also check the number of **epochs** needed for a given loss. These results will be compared to random shuffling with a predefined random state. 
