@@ -45,7 +45,8 @@ class TrainingLoop:
     @tf.function
     def validation_step(self, x_val, y_val):
         val_logits = self.Model(x_val, training=False)
-        self.ValMetrics.update_state(y_val, val_logits)
+        if self.ValMetrics != None:
+            self.ValMetrics.update_state(y_val, val_logits)
 
 
 
@@ -64,14 +65,17 @@ class TrainingLoop:
 
 
                 loss_value = self.train_step(x_batch_train, y_batch_train)
-                steps.set_description("Epoch " + str(epoch+1) + '/' + str(epochs) + "\tLoss: " + str(float(loss_value))[:6]
+
+                if self.TrainMetrics != None:
+                    steps.set_description("Epoch " + str(epoch+1) + '/' + str(epochs) + "\tLoss: " + str(float(loss_value))[:6]
                                     + "\tMetrics: " + str(float(self.TrainMetrics.result()))[:6])
+                    self.TrainMetrics.reset_states()
+                else:
+                    steps.set_description("Epoch " + str(epoch+1) + '/' + str(epochs) + "\tLoss: " + str(float(loss_value))[:6])
                 
 
-                if i == len(train_data)-1:
+                if i == len(train_data)-1 and self.ValMetrics != None:
                     for x_batch_val, y_batch_val in self.validation_dataset:
                         self.validation_step(x_batch_val, y_batch_val)
                     steps.set_description(steps.desc + "\tValidation metrics: " + str(float(self.ValMetrics.result()))[:6])
-
-            self.TrainMetrics.reset_states()
-            self.ValMetrics.reset_states()
+                    self.ValMetrics.reset_states()
