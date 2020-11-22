@@ -18,7 +18,9 @@ class TrainingLoop:
         self.ValMetrics = val_metrics
         self.X_train, self.X_val, self.y_train, self.y_val = train_test_split(X, y, shuffle=shuffle, test_size=validation_split, random_state=42)
         self.batch_size = batch_size
+        # Create a tensor dataset for training
         self.train_dataset = tf.data.Dataset.from_tensor_slices((self.X_train, self.y_train)).shuffle(buffer_size=1024).batch(batch_size, drop_remainder=True)
+        # Create a tensor dataset for validation
         self.validation_dataset = tf.data.Dataset.from_tensor_slices((self.X_val, self.y_val)).batch(batch_size, drop_remainder=True)
         self.BatchSelector = batch_selection
 
@@ -61,6 +63,7 @@ class TrainingLoop:
 
         # Go through every epoch.
         for epoch in range(epochs):    
+            # using tqdm we create a good looking progress bar with the values printed next to it
             steps = trange(len(train_data), bar_format="{desc}\t{percentage:3.0f}% {r_bar}")
 
             # Go through the batches of the dataset.
@@ -77,18 +80,22 @@ class TrainingLoop:
                 # Train the network on the selected batch.
                 loss_value = self.train_step(x_batch_train, y_batch_train)
 
+                # If we have a custom metric function defined update the description
                 if self.TrainMetrics != None:
                     steps.set_description("Epoch " + str(epoch+1) + '/' + str(epochs) + "\tLoss: " + str(float(loss_value))[:6]
                                     + "\tMetrics: " + str(float(self.TrainMetrics.result()))[:6])
+                # Otherwise update only the loss and epoch count
                 else:
                     steps.set_description("Epoch " + str(epoch+1) + '/' + str(epochs) + "\tLoss: " + str(float(loss_value))[:6])
-                                
+
                 if i == len(train_data)-1 and self.ValMetrics != None:
                     # Run validation loop, which means calling the validation step for every batch in the validation dataset.
                     for x_batch_val, y_batch_val in self.validation_dataset:
                         self.validation_step(x_batch_val, y_batch_val)
+                    # Update description
                     steps.set_description(steps.desc + "\tValidation metrics: " + str(float(self.ValMetrics.result()))[:6])
                     self.ValMetrics.reset_states()
             
+            # reset the metric function
             if self.TrainMetrics != None:
                 self.TrainMetrics.reset_states()
