@@ -1,11 +1,4 @@
 import tensorflow as tf
-
-try:
-    gpus= tf.config.experimental.list_physical_devices('GPU')
-    tf.config.experimental.set_memory_growth(gpus[0], True)
-except:
-    pass
-    
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
@@ -69,7 +62,6 @@ class TrainingLoop:
                 if self.TrainMetrics != None:
                     steps.set_description("Epoch " + str(epoch+1) + '/' + str(epochs) + "\tLoss: " + str(float(loss_value))[:6]
                                     + "\tMetrics: " + str(float(self.TrainMetrics.result()))[:6])
-                    self.TrainMetrics.reset_states()
                 else:
                     steps.set_description("Epoch " + str(epoch+1) + '/' + str(epochs) + "\tLoss: " + str(float(loss_value))[:6])
                 
@@ -79,3 +71,6 @@ class TrainingLoop:
                         self.validation_step(x_batch_val, y_batch_val)
                     steps.set_description(steps.desc + "\tValidation metrics: " + str(float(self.ValMetrics.result()))[:6])
                     self.ValMetrics.reset_states()
+            
+            if self.TrainMetrics != None:
+                self.TrainMetrics.reset_states()
