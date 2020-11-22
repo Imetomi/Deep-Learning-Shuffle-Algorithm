@@ -61,13 +61,13 @@ class TrainingLoop:
 
                 loss_value = self.train_step(x_batch_train, y_batch_train)
                 steps.set_description("Epoch " + str(epoch+1) + '/' + str(epochs) + "\tLoss: " + str(float(loss_value))[:6]
-                                    + "\tAccuracy: " + str(float(self.TrainMetrics.result()))[:6])
+                                    + "\tMetrics: " + str(float(self.TrainMetrics.result()))[:6])
                 
 
                 if i == len(train_data)-1:
                     for x_batch_val, y_batch_val in self.validation_dataset:
                         self.validation_step(x_batch_val, y_batch_val)
-                    steps.set_description(steps.desc + "\tValidation accuracy: " + str(float(self.ValMetrics.result()))[:6])
+                    steps.set_description(steps.desc + "\tValidation metrics: " + str(float(self.ValMetrics.result()))[:6])
 
             self.TrainMetrics.reset_states()
             self.ValMetrics.reset_states()
