@@ -88,7 +88,7 @@ class TrainingLoop:
                 
                 loss_value = None
                 if self.BatchSelector != None:
-                    idx = self.BatchSelector(train_data, i)
+                    idx = self.BatchSelector(train_data, i, self.Model, self.LossFunction)
                     x_batch_train = train_data[idx][0]
                     y_batch_train = train_data[idx][1]
                     loss_value = self.train_step(x_batch_train, y_batch_train)
