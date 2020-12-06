@@ -47,17 +47,19 @@ class TrainingLoop:
         train_data = list(self.train_dataset)
 
         for epoch in range(epochs):    
-            steps = trange(len(train_data), bar_format="{desc}\t{percentage:3.0f}% {r_bar}")
+            steps = trange(len(train_data)-10, bar_format="{desc}\t{percentage:3.0f}% {r_bar}")
             for i in steps:
                 step = i
                 x_batch_train = train_data[i][0]
                 y_batch_train = train_data[i][1]
                 
+                loss_value = None
                 if self.BatchSelector != None:
-                    x_batch_train, y_batch_train = self.BatchSelector(train_data, i)
-
-
-                loss_value = self.train_step(x_batch_train, y_batch_train)
+                    idx, loss_value = self.BatchSelector(train_data, i)
+                    x_batch_train = train_data[idx][0]
+                    y_batch_train = train_data[idx][1]
+                else:
+                    loss_value = self.train_step(x_batch_train, y_batch_train)
 
                 if self.TrainMetrics != None:
                     steps.set_description("Epoch " + str(epoch+1) + '/' + str(epochs) + "\tLoss: " + str(float(loss_value))[:6]
