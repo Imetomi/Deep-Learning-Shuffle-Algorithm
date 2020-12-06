@@ -5,7 +5,7 @@ from tqdm import tqdm
 from tqdm.autonotebook import tqdm, trange
 from sklearn.model_selection import train_test_split
 import pandas as pd
-import timeit
+import time
 
 
 # This class manages the training of a model with a custom training loop.
@@ -75,7 +75,8 @@ class TrainingLoop:
 
         # Go through every epoch.
         for epoch in range(epochs):
-            start = timeit.timeit()
+            start = time.monotonic()
+            
             # using tqdm we create a good looking progress bar with the values printed next to it
             steps = trange(len(train_data), bar_format="{desc}\t{percentage:3.0f}% {r_bar}")
 
@@ -118,7 +119,7 @@ class TrainingLoop:
             if self.TrainMetrics != None:
                 self.TrainMetrics.reset_states()
 
-            end = timeit.timeit()
+            end = time.monotonic()
 
             # save data to dataframe
             if self.LogFile != None:

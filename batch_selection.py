@@ -12,7 +12,7 @@ def calc_loss(x_train, y_train, model, loss_function):
 
 
 length = 10
-def bad_batch_selector(data, idx, model, loss_function ):
+def windowed_batch_selector(data, idx, model, loss_function ):
     largest_loss = 0
     largest_loss_idx = idx
 
@@ -28,3 +28,21 @@ def bad_batch_selector(data, idx, model, loss_function ):
     else:
         loss = calc_loss(data[idx][0], data[idx][1], model, loss_function)
         return idx
+
+
+losses = []
+def sorting_batch_selector(data, idx, model, loss_function):
+    global losses
+    if idx == 0:
+        for i in range(len(data)):
+            x_batch_train = data[i][0]
+            y_batch_train = data[i][1]
+            losses.append([i, float(calc_loss(x_batch_train, y_batch_train, model, loss_function))])
+        losses = sorted(losses, key=lambda x:x[1], reverse=True)
+
+
+    return_idx = losses[idx][0]
+    if idx == len(data)-1:
+        losses.clear()
+    
+    return return_idx
