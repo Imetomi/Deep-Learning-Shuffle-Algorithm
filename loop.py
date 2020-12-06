@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 # This class manages the training of a model with a custom training loop.
 # It is needed so we can replace the batch selection part of the whole training algorithm.
 class TrainingLoop:
-    def __init__(self, model, X, y, loss_function, optimizer, train_metrics=None, val_metrics=None, validation_split=0, shuffle=True, batch_selection=None, batch_size=1):
+    def __init__(self, model, X, y, loss_function, optimizer, train_metrics=None, val_metrics=None, validation_split=0, shuffle=True, batch_selection=None, batch_size=1, length=None):
         np.random.seed(42)
         tf.random.set_seed(42)
         self.Model = model 
@@ -22,7 +22,10 @@ class TrainingLoop:
         self.train_dataset = tf.data.Dataset.from_tensor_slices((self.X_train, self.y_train)).shuffle(buffer_size=1024).batch(batch_size, drop_remainder=True)
         # Create a tensor dataset for validation
         self.validation_dataset = tf.data.Dataset.from_tensor_slices((self.X_val, self.y_val)).batch(batch_size, drop_remainder=True)
+        # The batch selection algorithm
         self.BatchSelector = batch_selection
+        # The batch selection algorithm's selection window (if needed)
+        self.Length = 0
 
 
 
@@ -75,9 +78,10 @@ class TrainingLoop:
                 
                 loss_value = None
                 if self.BatchSelector != None:
-                    idx, loss_value = self.BatchSelector(train_data, i)
+                    idx = self.BatchSelector(train_data, i)
                     x_batch_train = train_data[idx][0]
                     y_batch_train = train_data[idx][1]
+                    loss_value = self.train_step(x_batch_train, y_batch_train)
                 else:
                     loss_value = self.train_step(x_batch_train, y_batch_train)
 
