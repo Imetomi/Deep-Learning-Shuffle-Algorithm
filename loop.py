@@ -4,11 +4,14 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from tqdm.autonotebook import tqdm, trange
 from sklearn.model_selection import train_test_split
+import pandas as pd
+import timeit
+
 
 # This class manages the training of a model with a custom training loop.
 # It is needed so we can replace the batch selection part of the whole training algorithm.
 class TrainingLoop:
-    def __init__(self, model, X, y, loss_function, optimizer, train_metrics=None, val_metrics=None, validation_split=0, shuffle=True, batch_selection=None, batch_size=1, length=None, log_file=None):
+    def __init__(self, model, X, y, loss_function, optimizer, train_metrics=None, val_metrics=None, validation_split=0, shuffle=True, batch_selection=None, batch_size=1, log_file=None):
         np.random.seed(42)
         tf.random.set_seed(42)
         self.Model = model 
@@ -25,8 +28,8 @@ class TrainingLoop:
         # The batch selection algorithm
         self.BatchSelector = batch_selection
         # The batch selection algorithm's selection window (if needed)
-        self.Length = 0
         self.LogFile = log_file
+        self.Logs = pd.DataFrame(columns=['Epoch', 'Time', 'Loss', 'Metrics', 'Validation'])
 
 
 
@@ -65,8 +68,14 @@ class TrainingLoop:
     def train(self, epochs):
         train_data = list(self.train_dataset)
 
+        # saving values for logging purposes
+        metrics_log = None
+        validation_log = None
+        loss_log = None
+
         # Go through every epoch.
-        for epoch in range(epochs):    
+        for epoch in range(epochs):
+            start = timeit.timeit()
             # using tqdm we create a good looking progress bar with the values printed next to it
             steps = trange(len(train_data), bar_format="{desc}\t{percentage:3.0f}% {r_bar}")
 
@@ -85,12 +94,14 @@ class TrainingLoop:
                     loss_value = self.train_step(x_batch_train, y_batch_train)
                 else:
                     loss_value = self.train_step(x_batch_train, y_batch_train)
+                loss_log = float(loss_value)
 
                 # If we have a custom metric function defined update the description
                 if self.TrainMetrics != None:
                     steps.set_description("Epoch " + str(epoch+1) + '/' + str(epochs) + "\tLoss: " + str(float(loss_value))[:6]
                                     + "\tMetrics: " + str(float(self.TrainMetrics.result()))[:6])
                 # Otherwise update only the loss and epoch count
+                    metrics_log = float(self.TrainMetrics.result())
                 else:
                     steps.set_description("Epoch " + str(epoch+1) + '/' + str(epochs) + "\tLoss: " + str(float(loss_value))[:6])
 
@@ -100,8 +111,18 @@ class TrainingLoop:
                         self.validation_step(x_batch_val, y_batch_val)
                     # Update description
                     steps.set_description(steps.desc + "\tValidation metrics: " + str(float(self.ValMetrics.result()))[:6])
+                    validation_log = float(self.ValMetrics.result())
                     self.ValMetrics.reset_states()
             
             # reset the metric function
             if self.TrainMetrics != None:
                 self.TrainMetrics.reset_states()
+
+            end = timeit.timeit()
+
+            # save data to dataframe
+            if self.LogFile != None:
+                self.Logs.loc[len(self.Logs)] = [epoch+1, end - start, loss_log, metrics_log, validation_log]
+
+        if self.LogFile != None:
+            self.Logs.to_csv(self.LogFile, index=False)        
