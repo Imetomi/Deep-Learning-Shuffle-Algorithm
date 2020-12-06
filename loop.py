@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 # This class manages the training of a model with a custom training loop.
 # It is needed so we can replace the batch selection part of the whole training algorithm.
 class TrainingLoop:
-    def __init__(self, model, X, y, loss_function, optimizer, train_metrics=None, val_metrics=None, validation_split=0, shuffle=True, batch_selection=None, batch_size=1, length=None):
+    def __init__(self, model, X, y, loss_function, optimizer, train_metrics=None, val_metrics=None, validation_split=0, shuffle=True, batch_selection=None, batch_size=1, length=None, log_file=None):
         np.random.seed(42)
         tf.random.set_seed(42)
         self.Model = model 
@@ -26,6 +26,7 @@ class TrainingLoop:
         self.BatchSelector = batch_selection
         # The batch selection algorithm's selection window (if needed)
         self.Length = 0
+        self.LogFile = log_file
 
 
 
