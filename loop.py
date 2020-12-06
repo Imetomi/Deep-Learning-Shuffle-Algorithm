@@ -73,9 +73,10 @@ class TrainingLoop:
         validation_log = None
         loss_log = None
 
+        start = 0
         # Go through every epoch.
         for epoch in range(epochs):
-            start = time.monotonic()
+            epoch_start = time.monotonic()
             
             # using tqdm we create a good looking progress bar with the values printed next to it
             steps = trange(len(train_data), bar_format="{desc}\t{percentage:3.0f}% {r_bar}")
@@ -123,7 +124,9 @@ class TrainingLoop:
 
             # save data to dataframe
             if self.LogFile != None:
-                self.Logs.loc[len(self.Logs)] = [epoch+1, end - start, loss_log, metrics_log, validation_log]
+                self.Logs.loc[len(self.Logs)] = [epoch+1, start, loss_log, metrics_log, validation_log]
+                start += end - epoch_start
+
 
         if self.LogFile != None:
             self.Logs.to_csv(self.LogFile, index=False)        
