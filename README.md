@@ -32,8 +32,8 @@ We prepared our framework so the only thing left is to create the algorithm that
 
 ## Participants
 Czibor Dóra  
-Kacsó Péter Gábor
-Imets Tamás
+Kacsó Péter Gábor  
+Imets Tamás  
 
 ## Team
 Johnny Depp Learning
