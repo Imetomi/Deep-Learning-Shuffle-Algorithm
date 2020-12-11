@@ -29,3 +29,8 @@ In order to define custom batch selection algorithms we need to access the train
 
 ## Batch Selection Program
 We prepared our framework so the only thing left is to create the algorithm that fulfils this part. This function is going to be given as a parameter to the training class.
+
+## Participants
+Czibor Dóra  
+Kacsó Péter Gábor
+Imets Tamás
