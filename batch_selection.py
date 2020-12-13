@@ -2,11 +2,13 @@ import tensorflow as tf
 import numpy as np
 
 
-
+# Calculate the loss of one batch.
 @tf.function
 def calc_loss(x_train, y_train, model, loss_function):
     with tf.GradientTape() as tape:
+        # Run the forward pass.
         logits = model(x_train, training=False)
+        # Compute loss value.
         loss_value = loss_function(y_train, logits)
     return loss_value
 
@@ -33,11 +35,14 @@ def windowed_batch_selector(data, idx, model, loss_function ):
 losses = []
 def sorting_batch_selector(data, idx, model, loss_function):
     global losses
+    # Index is 0, then we are the beginning of an epoch.
     if idx == 0:
+        # Calculate losses.
         for i in range(len(data)):
             x_batch_train = data[i][0]
             y_batch_train = data[i][1]
             losses.append([i, float(calc_loss(x_batch_train, y_batch_train, model, loss_function))])
+        # Sort batches by loss.
         losses = sorted(losses, key=lambda x:x[1], reverse=True)
 
 
