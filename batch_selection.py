@@ -19,6 +19,7 @@ def windowed_batch_selector(data, idx, model, loss_function ):
     largest_loss_idx = idx
 
     if idx < len(data) - length:
+        # Look at next length batches and select the one with the biggest loss.
         for i in range(idx, idx+length):
             x_batch_train = data[i][0]
             y_batch_train = data[i][1]
