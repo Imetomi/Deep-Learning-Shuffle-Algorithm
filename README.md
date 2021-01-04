@@ -41,3 +41,7 @@ Imets Tamás
 
 ## Team
 Johnny Depp Learning
+
+## Presentation Video Link
+https://youtu.be/8DbUhXP46v4
+
